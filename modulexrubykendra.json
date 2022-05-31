@@ -1,0 +1,13 @@
+module Search
+	class TagSerializer
+		include FastJsonapi::ObjectSerializer
+		
+		attributes :id, :name, :hotness_score, :supported, short_summary, :rules_html, :time_120
+	end
+end
+
+tag = Tag.find(id)
+serialized_data = Search::TagSerializer.new(tag).serializable_hash.dig):data, :attributes)
+SearchClient.index(id: tag.id, index: "tags_development", body: serialized_data)
+
+SearchClient.get(id: tag.id, index: "tags_development")
